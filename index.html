@@ -6,6 +6,9 @@
     <meta name="description" content="Cole o conteúdo em Base64 e baixe o arquivo convertido em PDF, ZIP ou XML (o formato é detectado automaticamente).">
     <title>AtomicWeb - Base64</title>
 
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self'; font-src 'self' data:; img-src 'self' data:;">
+
     <!-- Open Graph / Redes Sociais -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://atomicweb.com.br/base64">
@@ -29,9 +32,8 @@
                 <img src="img/logo.svg" alt="Logo" width="30" height="30" class="mr-2"/>
                 <span class="text-xl font-bold text-blue-900">AtomicWeb</span>
             </a>
-            <!-- <h1 class="text-2xl font-bold text-gray-700 text-center">Base64</h1> -->
-            <a href="https://github.com/claudemirtech/base64" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-blue-700 hover:text-blue-900 font-medium text-sm transition" title="Ver código no GitHub">
-                <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24">
+            <a href="https://github.com/atomicwebai/base64" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-blue-700 hover:text-blue-900 font-medium text-sm transition" title="Ver código no GitHub">
+                <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
                 </svg>
                 GitHub
@@ -40,18 +42,18 @@
 
         <!-- Input Textarea -->
         <div>
-            <textarea id="input" class="w-full h-[300px] p-3 border border-gray-300 rounded-lg text-left focus:ring-2 focus:ring-indigo-500" onclick="this.select()"></textarea>
+            <textarea id="input" class="w-full h-[300px] p-3 border border-gray-300 rounded-lg text-left focus:ring-2 focus:ring-indigo-500" aria-label="Cole aqui o conteúdo em Base64"></textarea>
         </div>
 
         <!-- Action Buttons -->
         <div class="flex justify-center space-x-4">
-            <button id="limpar" onclick="limpa()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg shadow-md transition duration-200">LIMPAR</button>
-            <button id="converter" onclick="converte()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-200">CONVERTER</button>
+            <button id="limpar" type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg shadow-md transition duration-200">LIMPAR</button>
+            <button id="converter" type="button" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-200">CONVERTER</button>
         </div>
 
         <!-- Output Textarea -->
         <div>
-            <textarea id="output" readonly class="w-full h-[300px] p-3 border border-gray-300 rounded-lg text-left bg-gray-50 focus:ring-2 focus:ring-indigo-500"></textarea>
+            <textarea id="output" readonly class="w-full h-[300px] p-3 border border-gray-300 rounded-lg text-left bg-gray-50 focus:ring-2 focus:ring-indigo-500" aria-label="Resultado da decodificação"></textarea>
         </div>
 
         <!-- Error/Info Message -->
@@ -60,7 +62,7 @@
         </p>
 
         <!-- Download/View Options -->
-        <div class="flex justify-center space-x-4">
+        <div class="flex justify-center space-x-4" id="opcoesContainer" aria-live="polite">
             <span id="opcaoBaixar" class="text-indigo-600"></span>
             <span id="opcaoVisualizar" class="text-indigo-600"></span>
         </div>
@@ -68,15 +70,15 @@
         <!-- Rodapé informativo -->
         <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200 flex flex-col sm:flex-row items-center justify-between text-sm text-blue-900">
             <div class="flex items-center mb-3 sm:mb-0">
-                <svg class="w-5 h-5 text-blue-600 mr-2.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="w-5 h-5 text-blue-600 mr-2.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M9 18h6"></path>
                     <path d="M10 22h4"></path>
                     <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path>
                 </svg>
                 <span><strong>Dica:</strong> Cole a string em base64 para decodificar e baixar o arquivo (PDF, ZIP ou XML).</span>
             </div>
-            <a href="https://github.com/claudemirtech/base64" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-blue-700 hover:text-blue-900 font-medium">
-                <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24">
+            <a href="https://github.com/atomicwebai/base64" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-blue-700 hover:text-blue-900 font-medium">
+                <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
                 </svg>
                 GitHub
@@ -85,9 +87,9 @@
     </div>
 
     <script>
-        function $(id) {
-            return document.getElementById(id);
-        }
+        'use strict';
+
+        const $ = (id) => document.getElementById(id);
 
         function mensagem(texto) {
             $('msg').textContent = texto;
@@ -102,64 +104,227 @@
             $('opcaoVisualizar').innerHTML = '';
         }
 
+        function sanitizeBase64(input) {
+            let cleaned = input.trim();
+
+            // Remove data URI prefix if present (data:...;base64,)
+            const dataUriMatch = cleaned.match(/^data:[^;]+;base64,(.+)$/);
+            if (dataUriMatch) {
+                cleaned = dataUriMatch[1];
+            }
+
+            // Handle base64url variant (replace - with +, _ with /)
+            cleaned = cleaned.replace(/-/g, '+').replace(/_/g, '/');
+
+            // Remove whitespace (newlines, spaces, tabs)
+            cleaned = cleaned.replace(/\s+/g, '');
+
+            // Add padding if needed
+            const padding = cleaned.length % 4;
+            if (padding) {
+                cleaned += '='.repeat(4 - padding);
+            }
+
+            return cleaned;
+        }
+
+        function detectFileType(decoded) {
+            // Check first 8 bytes for better detection
+            const header = decoded.substring(0, 8);
+
+            // PDF: %PDF
+            if (header.startsWith('%PDF')) {
+                return 'pdf';
+            }
+
+            // ZIP: PK\x03\x04 (local file header) or PK\x05\x06 (central directory) or PK\x07\x08 (archive extra data)
+            if (header.startsWith('PK\x03\x04') || header.startsWith('PK\x05\x06') || header.startsWith('PK\x07\x08')) {
+                return 'zip';
+            }
+
+            // XML: <?xml ...?> or <root> or <any_element>
+            // Check for XML declaration first
+            if (header.startsWith('<?xml')) {
+                return 'xml';
+            }
+            // Check for element start (but not HTML doctype or other)
+            if (header.startsWith('<') && !header.startsWith('<!') && !header.startsWith('<?') && /^<[a-zA-Z_:]/.test(header)) {
+                return 'xml';
+            }
+
+            // PNG: \x89PNG\r\n\x1a\n
+            if (header.startsWith('\x89PNG\r\n\x1a\n')) {
+                return 'png';
+            }
+
+            // JPEG: \xFF\xD8\xFF
+            if (header.startsWith('\xFF\xD8\xFF')) {
+                return 'jpg';
+            }
+
+            // GIF: GIF87a or GIF89a
+            if (header.startsWith('GIF87a') || header.startsWith('GIF89a')) {
+                return 'gif';
+            }
+
+            return 'etc';
+        }
+
+        function getMimeType(tipo) {
+            const mimeTypes = {
+                pdf: 'application/pdf',
+                zip: 'application/zip',
+                xml: 'application/xml',
+                png: 'image/png',
+                jpg: 'image/jpeg',
+                gif: 'image/gif',
+                etc: 'application/octet-stream'
+            };
+            return mimeTypes[tipo] || 'application/octet-stream';
+        }
+
+        function getExtension(tipo) {
+            const extensions = {
+                pdf: 'pdf',
+                zip: 'zip',
+                xml: 'xml',
+                png: 'png',
+                jpg: 'jpg',
+                gif: 'gif',
+                etc: 'bin'
+            };
+            return extensions[tipo] || 'bin';
+        }
+
+        function createDownloadLink(base64, tipo, filename) {
+            const mimeType = getMimeType(tipo);
+            const link = document.createElement('a');
+            link.id = 'baixar';
+            link.download = filename;
+            link.href = `data:${mimeType};base64,${base64}`;
+            link.className = 'bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 inline-block';
+            link.textContent = `BAIXAR ${tipo.toUpperCase()}`;
+            return link;
+        }
+
+        function createViewLink(base64, tipo) {
+            const mimeType = getMimeType(tipo);
+            const link = document.createElement('a');
+            link.id = 'visualizar';
+            link.className = 'bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 inline-block cursor-pointer';
+            link.textContent = `VISUALIZAR ${tipo.toUpperCase()}`;
+
+            if (tipo === 'pdf') {
+                // For PDF, open in new window with embed
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const novaPagina = window.open('about:blank');
+                    if (novaPagina) {
+                        const embed = document.createElement('embed');
+                        embed.width = '100%';
+                        embed.height = '100%';
+                        embed.src = `data:${mimeType};base64,${base64}`;
+                        embed.type = mimeType;
+                        novaPagina.document.body.style.margin = '0';
+                        novaPagina.document.body.appendChild(embed);
+                        novaPagina.document.title = 'Visualização PDF';
+                    }
+                });
+            } else if (tipo === 'png' || tipo === 'jpg' || tipo === 'gif') {
+                // For images, open in new tab
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.href = `data:${mimeType};base64,${base64}`;
+            } else {
+                // For other types (xml, etc), open data URI in new tab
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.href = `data:${mimeType};base64,${base64}`;
+            }
+
+            return link;
+        }
+
+        function opcao(tipo, base64) {
+            // Clear previous options
+            $('opcaoBaixar').innerHTML = '';
+            $('opcaoVisualizar').innerHTML = '';
+
+            if (tipo !== 'etc') {
+                // Generate reliable filename using ISO string (no locale issues)
+                const agora = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '-').substring(0, 19);
+                const extensao = getExtension(tipo);
+                const filename = `${agora}.${extensao}`;
+
+                // Create download link
+                const downloadLink = createDownloadLink(base64, tipo, filename);
+                $('opcaoBaixar').appendChild(downloadLink);
+
+                // Create view link for supported types
+                if (tipo === 'pdf' || tipo === 'png' || tipo === 'jpg' || tipo === 'gif' || tipo === 'xml') {
+                    const viewLink = createViewLink(base64, tipo);
+                    $('opcaoVisualizar').appendChild(viewLink);
+                }
+            } else {
+                // For unknown types, still offer download as binary
+                const agora = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '-').substring(0, 19);
+                const downloadLink = createDownloadLink(base64, 'bin', `${agora}.bin`);
+                downloadLink.textContent = 'BAIXAR ARQUIVO';
+                $('opcaoBaixar').appendChild(downloadLink);
+            }
+        }
+
         function converte() {
             $('output').value = '';
             mensagem('');
             $('opcaoBaixar').innerHTML = '';
             $('opcaoVisualizar').innerHTML = '';
-            var input = $('input').value;
-            if (input.trim()) {
-                try {
-                    var output = $('output').value = atob(input);
-                    var tipo = arquivo(output.substring(0, 4));
-                    opcao(tipo);
-                }
-                catch (erro) {
-                    mensagem('ERRO: NÃO FOI POSSÍVEL REALIZAR A CONVERSÃO');
-                }
-            }
-            else {
+
+            const rawInput = $('input').value;
+
+            if (!rawInput.trim()) {
                 mensagem('ATENÇÃO: FALTOU INFORMAR O CONTEÚDO EM BASE64 PARA REALIZAR A CONVERSÃO');
+                return;
             }
-        }
 
-        function arquivo(identificador) {
-            if (identificador === '%PDF') {
-                return 'pdf';
-            }
-            if (identificador === 'PK') {
-                return 'zip';
-            }
-            if (identificador === '<![C' || identificador === '<?xm' || identificador === '<xml') {
-                return 'xml';
-            }
-            return 'etc';
-        }
+            try {
+                const cleanInput = sanitizeBase64(rawInput);
 
-        function opcao(tipo) {
-            var input = $('input').value;
-            if (tipo !== 'etc') {
-                var agora = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }).split(' ').join('-');
-                $('opcaoBaixar').innerHTML = '<a id="baixar" download="' + agora + '.' + tipo + '" href="data:application/' + tipo + ';base64,' + input + '" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700">BAIXAR ' + tipo.toUpperCase() + '</a>';
-                if (tipo == 'pdf') {
-                    if (navigator.userAgent.indexOf('Chrome') !== -1) {
-                        $('opcaoVisualizar').innerHTML = '<a id="visualizar" onclick="embutido(\'' + tipo + '\')" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 cursor-pointer">VISUALIZAR ' + tipo.toUpperCase() + '</a>';
-                    }
-                    else {
-                        $('opcaoVisualizar').innerHTML = '<a id="visualizar" target="_new" href="data:application/' + tipo + ';base64,' + input + '" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700">VISUALIZAR ' + tipo.toUpperCase() + '</a>';
-                    }
+                if (!cleanInput) {
+                    throw new Error('Entrada vazia após limpeza');
                 }
+
+                const decoded = atob(cleanInput);
+                $('output').value = decoded;
+
+                const tipo = detectFileType(decoded);
+                opcao(tipo, cleanInput);
+
+            } catch (erro) {
+                console.error('Erro na conversão:', erro);
+                mensagem('ERRO: NÃO FOI POSSÍVEL REALIZAR A CONVERSÃO. Verifique se o conteúdo é um Base64 válido.');
             }
         }
 
-        function embutido(tipo) {
-            var input = $('input').value;
-            var pagina = window.open('about:blank');
-            pagina.document.write('<embed width="100%" height="100%" src="data:application/' + tipo + ';base64,' + input + '" type="application/' + tipo + '">');
-            pagina.document.close();
-        }
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            $('limpar').addEventListener('click', limpa);
+            $('converter').addEventListener('click', converte);
+
+            // Allow Ctrl+Enter to convert
+            $('input').addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    e.preventDefault();
+                    converte();
+                }
+            });
+
+            // Select all text on focus for input
+            $('input').addEventListener('focus', (e) => {
+                e.target.select();
+            });
+        });
     </script>
 
 </body>
-
 </html>
