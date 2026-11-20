@@ -4,13 +4,13 @@
 
 **Decodificador e visualizador de arquivos Base64 diretamente no navegador.**
 
-[![Deploy static content to Pages](https://github.com/claudemirtech/base64/actions/workflows/static.yml/badge.svg)](https://github.com/claudemirtech/base64/actions/workflows/static.yml)
+[![Deploy static content to Pages](https://github.com/atomicwebai/base64/actions/workflows/static.yml/badge.svg)](https://github.com/atomicwebai/base64/actions/workflows/static.yml)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![Client-Side Only](https://img.shields.io/badge/Processamento-100%25%20Client--Side-brightgreen?style=flat-square)
 
-[**Acessar a Ferramenta Online**](https://atomicweb.com.br/base64) • [**Reportar Problema**](https://github.com/claudemirtech/base64/issues)
+[**Acessar a Ferramenta Online**](https://atomicweb.com.br/base64) • [**Reportar Problema**](https://github.com/atomicwebai/base64/issues)
 
 </div>
 
@@ -67,7 +67,7 @@ Por se tratar de uma aplicação estática e autocontida, você não precisa ins
 
 ### 1. Clonar o repositório:
 ```bash
-git clone https://github.com/claudemirtech/base64.git
+git clone https://github.com/atomicwebai/base64.git
 cd base64
 ```
 
@@ -107,6 +107,6 @@ Qualquer *push* na branch `main` dispara automaticamente o build e deploy do con
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **[Claudemir](https://github.com/claudemirtech)**.
+Desenvolvido por **[Claudemir](https://github.com/atomicwebai)**.
 
 Parte do conjunto de utilitários de **[AtomicWeb](https://atomicweb.com.br/)**.
